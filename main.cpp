@@ -1,24 +1,8 @@
 #include <iostream>
 #include "Terminal.h"
-
+#include "mainFunctions.h"
 using namespace std;
 
-enum string_code{
-    touch,
-    pwd,
-    write,
-    read,
-    cat,
-    mkdir,
-    rmdir,
-    chdir,
-    ls,
-    copy,
-    ln,
-    lproot,
-    other
-};
-string_code stringHash(const string &str);
 
 int main() {
     Terminal terminal(cout);
@@ -76,17 +60,3 @@ int main() {
 }
 
 
-string_code stringHash(const string &str){
-    if (str == "touch") return touch;
-    if (str == "pwd") return pwd;
-    if (str == "write") return write;
-    if (str == "read") return read;
-    if (str == "cat") return cat;
-    if (str == "mkdir") return mkdir;
-    if (str == "chdir") return chdir;
-    if (str == "ls") return ls;
-    if (str == "copy") return string_code::copy;
-    if (str == "ln") return ln;
-    if (str == "lproot") return lproot;
-    return other;
-}
