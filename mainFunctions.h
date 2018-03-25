@@ -24,5 +24,4 @@ enum string_code{
 };
 string_code stringHash(const string &str);
 
-
 #endif //EX1_MAINFUNCTIONS_H

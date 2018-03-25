@@ -18,7 +18,7 @@ bool Folder::fileExists(const string fileName) {
     return false;
 }
 bool Folder::folderExists(const string folderName) {
-    for (vector<File*>::iterator i = files.begin(); i != files.end(); i++){
+    for (vector<Folder*>::iterator i = folders.begin(); i != folders.end(); i++){
         if ((*i)->getName() == folderName){
             return true;
         }

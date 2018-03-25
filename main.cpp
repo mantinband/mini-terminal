@@ -7,7 +7,7 @@ using namespace std;
 int main() {
     Terminal terminal(cout);
     string input;
-
+    cout << "$ ";
     cin >> input;
     while (input != "exit"){
         string path;
@@ -40,7 +40,8 @@ int main() {
                 cin >> path;
                 terminal.chdir(path); break;
             case ls:
-                terminal.ls(); break;
+                cin >> path;
+                terminal.ls(path); break;
             case string_code::copy:
                 cin >> path >> pathDestination;
                 terminal.copy(path,pathDestination); break;
@@ -51,8 +52,9 @@ int main() {
                 terminal.lproot(); break;
 
             default:
-                cout << "ERROR: invalid command" << endl; break;
+                cerr << "ERROR: invalid command" << endl; break;
         }
+        cout << "$ ";
         cin >> input;
     }
 
