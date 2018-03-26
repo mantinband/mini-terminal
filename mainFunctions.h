@@ -17,7 +17,7 @@ enum string_code{
     rmdir,
     chdir,
     ls,
-    copy,
+    copyFile,
     ln,
     lproot,
     other

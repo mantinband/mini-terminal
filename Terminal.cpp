@@ -6,9 +6,11 @@
 #include "Terminal.h"
 
 Terminal::Terminal(ostream &output)
-:outputStream(output), root(new Folder("V")),curFolderPath("V/"),curFolder(root) {
+:root(new Folder("V")),curFolder(root) ,outputStream(output),curFolderPath("V/"){
 }
 
+Terminal::Terminal(const Terminal &rhs)
+:root(rhs.getRoot()),curFolder(root),outputStream(rhs.getOutputStream()),curFolderPath(rhs.getCurFolderPath()) {}
 Terminal::~Terminal() {
     delete(root);
 }
@@ -26,6 +28,38 @@ void Terminal::cat(const string path) const {
 }
 
 void Terminal::mkdir(string path) {
+    try {
+        vector<string> *parsedPath = parsePath(path);
+        Folder *f;
+
+        if (parsedPath->at(0) == root->getName()) {
+            f = root;
+        } else if (parsedPath->at(0) == curFolder->getName()) {
+            f = curFolder;
+        } else if (parsedPath->size() == 1) {
+            curFolder->getFolders().push_back(new Folder(parsedPath->at(0)));
+            return;
+        } else {
+            throw noSuchFolder();
+        }
+
+        if (parsedPath->size() > 2) {
+            vector<string>::iterator currentFolderIterator = parsedPath->begin();
+            currentFolderIterator++;
+            for (unsigned int i = 0; i < parsedPath->size() - 2; i++) {
+                if (f->hasFolder(*currentFolderIterator)) {
+                    f = f->getFolder(*currentFolderIterator);
+                    currentFolderIterator++;
+                } else {
+                    throw noSuchFolder();
+                }
+            }
+        }
+        f->getFolders().push_back(new Folder(parsedPath->at(parsedPath->size() - 1)));
+        return;
+    } catch (string exceptionStatement){
+        cerr << exceptionStatement << endl;
+    }
     stringstream s(path);
     string folderName;
     Folder *f;
@@ -61,8 +95,53 @@ void Terminal::mkdir(string path) {
     }
 }
 
-void Terminal::chdir(const string path) const {
+void Terminal::chdir(string path) {
+    {
+        vector<string> *parsedPath = parsePath(path);
 
+        if (parsedPath->at(0) == root->getName()){
+            Folder *f= root;
+            if (parsedPath->size() > 1){
+                vector<string>::iterator currentFolderIterator = parsedPath->begin();
+
+                for (int i=0; i<parsedPath->size()-1; i++){
+                    if (f->hasFolder(*currentFolderIterator)){
+                        f = f->getFolder(*currentFolderIterator);
+                    } else {
+                        throw noSuchFolder();
+                    }
+                }
+            }
+            curFolder = f;
+            curFolderPath = path;
+        } else if (parsedPath->at(0) == curFolder->getName()){
+            
+        } else {
+            throw noSuchFolder();
+        }
+
+    }
+
+    if (path[path.length()-1] != '/'){
+        path += '/';
+    }
+
+    if (path == root->getName() + "/"){
+        curFolder = root;
+        curFolderPath = path;
+    } else {
+        try {
+            curFolder = getFolder(path);
+            if (path[0] == root->getName()[0]){
+                curFolderPath = path;
+            } else {
+                curFolderPath = curFolderPath + path;
+            }
+            cout << "cur folder is " + curFolder->getName() << endl;
+        } catch (string exceptionStatement) {
+            cerr << exceptionStatement << endl;
+        }
+    }
 }
 
 void Terminal::pwd() const {
@@ -71,19 +150,53 @@ void Terminal::pwd() const {
 
 void Terminal::ls(string path) {
     if (path[path.length()-1] != '/'){
-        path += '/';
+        path+='/';
     }
-    try {
-        Folder *f = getFolder(path);
+    if (path == root->getName() + "/"){
         cout << path + ":" << endl;
-        printFolder(f);
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+        printFolder(root);
+    } else if (path == curFolder->getName()+"/"){
+        cout << path + ":" << endl;
+        printFolder(curFolder);
+    } else {
+        try {
+            Folder *f = getFolder(path);
+            cout << path + ":" << endl;
+            printFolder(f);
+        } catch (string exceptionStatement) {
+            cerr << exceptionStatement << endl;
+        }
     }
 }
 
-void Terminal::rmdir(const string path) {
+void Terminal::rmdir(string path) {
+    vector<string> *parsedPath = parsePath(path);
+    string toRemove = parsedPath->at(parsedPath->size()-1);
+    Folder *toRemoveFatherFolder;
 
+    if (parsedPath->at(0) == root->getName()){
+        toRemoveFatherFolder = root;
+    } else {
+        toRemoveFatherFolder = curFolder;
+    }
+
+    vector<string>::iterator curFolderIterator = parsedPath->begin();
+
+    if (parsedPath->size() > 2){
+        curFolderIterator++;
+        for (unsigned int i=0; i < parsedPath->size()-2 ; i++, curFolderIterator++){
+            if (toRemoveFatherFolder->folderExists(*curFolderIterator)){
+                toRemoveFatherFolder = toRemoveFatherFolder->getFolder(*curFolderIterator);
+            } else {
+                throw noSuchFolder();
+            }
+        }
+    }
+    if (toRemoveFatherFolder->folderExists(toRemove)){
+        toRemoveFatherFolder->deleteFolder(toRemove);
+    } else {
+        throw noSuchFolder();
+    }
 }
 
 void Terminal::lproot() const {
@@ -91,47 +204,36 @@ void Terminal::lproot() const {
 }
 
 void Terminal::touch( string path) {
-    stringstream s(path);
-    string parsedPath;
-    Folder *f;
-
-    if (path[path.length()-1] != '/'){
-        path += '/';
-    }
-
     try {
-        getline(s, parsedPath, '/');
-        if (folderNameStartPathIsLegal(parsedPath)) {
-            if (parsedPath == root->getName()){
-                f = root;
-            } else {
-                f = curFolder;
-            }
+        Folder *f;
+        vector<string> *parsedPath = parsePath(path);
+
+        if (parsedPath->at(0) == root->getName()) {
+            f = root;
+        } else if (parsedPath->at(0) == curFolder->getName()) {
+            f = curFolder;
+        } else if (parsedPath->size() == 1) {
+            curFolder->getFiles().push_back(new File(parsedPath->at(0)));
+            return;
         } else {
             throw noSuchFolder();
         }
-        getline(s, parsedPath, '/');
-        while (!s.eof()) {
-            if (parsedPathIsInFolders(f, parsedPath)) {
-                f = f->getFolder(parsedPath);
-                cout << "cur folder is " + f->getName() << endl;
-            } else if (parsedPathIsInFiles(f,parsedPath)) {
-                f->getFile(parsedPath)->touch();
-                return;
-            } else {
-                string restOfPath;
-                getline(s,restOfPath,'\n');
-                f->getFiles().push_back(new File(parsedPath+"/"+restOfPath));
-                outputStream << "added " + parsedPath << endl;
-                return;
-            }
-            getline(s, parsedPath, '/');
-        }
 
-        f->getFiles().push_back(new File(parsedPath));
-        outputStream << "added " + parsedPath << endl;
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+        if (parsedPath->size() > 2){
+            vector<string>::iterator currentFolderIterator = parsedPath->begin();
+            currentFolderIterator++;
+            for (unsigned int i=0; i<parsedPath->size()-2; i++) {
+                if (f->hasFolder(*currentFolderIterator)){
+                    f = f->getFolder(*currentFolderIterator);
+                    currentFolderIterator++;
+                } else {
+                    throw noSuchFolder();
+                }
+            }
+        }
+        f->getFiles().push_back(new File(parsedPath->at(parsedPath->size()-1)));
+    } catch (string exeptionStatement){
+        cerr << exeptionStatement << endl;
     }
 }
 
@@ -142,9 +244,6 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
 void Terminal::copy(const string pathSource, const string pathDestination) {
 
 }
-
-Terminal::Terminal(const Terminal &rhs)
-:outputStream(rhs.getOutputStream()),curFolderPath(rhs.getCurFolderPath()),root(rhs.getRoot()) {}
 
 ostream &Terminal::getOutputStream() const {
     return outputStream;
@@ -182,34 +281,30 @@ void Terminal::printFolder(Folder *f) const {
 }
 
 Folder *Terminal::getFolder(string folderPath) {
-    stringstream s(folderPath);
-    string folderName;
+    vector<string> *parsedPath = parsePath(folderPath);
     Folder *f;
 
-    if (folderName[folderName.length()-1] != '/'){
-        folderName += '/';
-    }
-
-    getline(s,folderName,'/');
-    if (!folderNameStartPathIsLegal(folderName)){
-        throw noSuchFolder();
+    if (parsedPath->at(0) == root->getName()){
+        f = root;
+    } else if (parsedPath->at(0) == curFolder->getName()){
+        f = curFolder;
     } else {
-        if (folderName == root->getName()){
-            f = root;
-        } else {
-            f = curFolder;
-        }
+        throw noSuchFolder();
     }
 
-    getline(s,folderName,'/');
-    while (!s.eof()){
-        if (parsedPathIsInFolders(f, folderName)){
-            f = f->getFolder(folderName);
+
+    vector<string>::iterator i = parsedPath->begin();
+    i++;
+
+    while (i != parsedPath->end()){
+        if (parsedPathIsInFolders(f,*i)){
+            f = f->getFolder(*i);
         } else {
             throw noSuchFolder();
         }
-        getline(s,folderName,'/');
+        i++;
     }
+
     return f;
 }
 
@@ -235,3 +330,49 @@ bool Terminal::folderNameStartPathIsLegal(string folderName) {
     return false;
 }
 
+Folder *Terminal::setStartingFolder(stringstream &s) {
+    Folder *f;
+    string folderName;
+
+    getline(s, folderName, '/');
+    if (folderNameStartPathIsLegal(folderName)) {
+        if (folderName == root->getName()){
+            f = root;
+        } else {
+            f = curFolder;
+        }
+    } else {
+        throw noSuchFolder();
+    }
+
+    return f;
+}
+
+vector<string> *Terminal::parsePath(string path) {
+    stringstream s(path);
+    string folderName;
+    vector<string> *parsedPath = new vector<string>();
+
+    if (path[path.length()-1] != '/'){
+        path += "/";
+    }
+    do {
+        getline(s, folderName, '/');
+        if (!folderName.empty())
+        parsedPath->push_back(folderName);
+    } while (!s.eof());
+
+    return parsedPath;
+}
+
+string Terminal::concatinatePath(vector<string> *parsedPath, int numberOfFolders) {
+    string concatinatedPath = "";
+    vector<string>::iterator it = parsedPath->begin();
+
+    for (int i=0 ; i < numberOfFolders ; i++){
+        concatinatedPath += *it;
+        concatinatedPath += "/";
+        it++;
+    }
+    return concatinatedPath;
+}

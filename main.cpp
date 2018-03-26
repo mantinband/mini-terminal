@@ -35,14 +35,14 @@ int main() {
                 terminal.mkdir(path); break;
             case rmdir:
                 cin >> path;
-                terminal.rmdir(path);
+                terminal.rmdir(path); break;
             case chdir:
                 cin >> path;
                 terminal.chdir(path); break;
             case ls:
                 cin >> path;
                 terminal.ls(path); break;
-            case string_code::copy:
+            case copyFile:
                 cin >> path >> pathDestination;
                 terminal.copy(path,pathDestination); break;
             case ln:

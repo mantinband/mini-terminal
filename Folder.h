@@ -18,6 +18,10 @@ public:
 
     Folder *getFolder(string folderName);
 
+    void deleteFolder(const string &toRemove);
+
+    bool hasFolder(string toFind);
+
 public:
     vector<Folder*> &getFolders() ;
     vector<File*> &getFiles() ;
@@ -34,6 +38,8 @@ private:
     string name;
     vector<Folder*> folders;
     vector<File*> files;
+
+    void removeRec();
 };
 
 

@@ -7,6 +7,13 @@
 Folder::Folder(const string folderName):name(folderName) {}
 
 Folder::~Folder() {
+    for (vector<File*>::iterator i = files.begin(); i != files.end(); i++){
+        delete *i;
+    }
+
+    for (vector<Folder*>::iterator i = folders.begin(); i != folders.end(); i++){
+        delete *i;
+    }
 }
 
 bool Folder::fileExists(const string fileName) {
@@ -72,4 +79,17 @@ vector<File *>::iterator Folder::getLastFile() {
     return files.end();
 }
 
+void Folder::deleteFolder(const string &toRemove) {
+    for (vector<Folder*>::iterator i = folders.begin(); i != folders.end(); i++){
+        if ((*i)->getName() == toRemove) {
+            delete *i;
+            folders.erase(i);
+            return;
+        }
+    }
+}
+
+bool Folder::hasFolder(string toFind) {
+    return getFolder(toFind) != NULL;
+}
 

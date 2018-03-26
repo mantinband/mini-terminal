@@ -10,9 +10,10 @@ string_code stringHash(const string &str){
     if (str == "read") return read;
     if (str == "cat") return cat;
     if (str == "mkdir") return mkdir;
+    if (str == "rmdir") return rmdir;
     if (str == "chdir") return chdir;
     if (str == "ls") return ls;
-    if (str == "copy") return string_code::copy;
+    if (str == "copyFile") return copyFile;
     if (str == "ln") return ln;
     if (str == "lproot") return lproot;
     return other;

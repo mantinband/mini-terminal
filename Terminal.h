@@ -22,22 +22,22 @@ public:
     void write(const string path, const int pos, const char val);
     void cat(const string path) const;
     void mkdir(string path);
-    void chdir(const string path) const;
+    void chdir(string path);
     ostream &getOutputStream() const;
     const string &getCurFolderPath() const;
     Folder *getRoot() const;
     void pwd() const;
     void ls(string path);
     void copy(const string pathSource, const string pathDestination);
-    void rmdir(const string path);
+    void rmdir(string path);
     void lproot() const;
     void ln(const string pathSource, const string pathDestination);
-
+    Folder *setStartingFolder(stringstream &path);
 private:
-    ostream &outputStream;
-    string curFolderPath;
     Folder* root;
     Folder* curFolder;
+    ostream &outputStream;
+    string curFolderPath;
     bool parsedPathIsInFolders(Folder *f, string folderName);
     bool parsedPathIsInFiles(Folder *f,string parsedPath);
 
@@ -46,12 +46,11 @@ private:
     Folder *getFolder(string folderPath);
 
     string noSuchFile();
-
     string noSuchFolder();
-
     bool folderNameIsCurrentFolder(string folderName);
-
     bool folderNameStartPathIsLegal(string folderName);
+    vector<string> * parsePath(string path);
+    string concatinatePath(vector<string> *parsedPath, int numberOfFolders);
 };
 
 
