@@ -18,13 +18,13 @@ public:
     Terminal& operator=(const Terminal& rhs);
     virtual ~Terminal();
     void touch(string path);
-    void read(const string path, const int pos) const;
-    void write(const string path, const int pos, const char val);
-    void cat(const string path) const;
+    void read(const string path, const int pos) ;
+    void write(const string path, const size_t pos, const char val);
+    void cat(const string path);
     void mkdir(string path);
     void chdir(string path);
     ostream &getOutputStream() const;
-    const string &getCurFolderPath() const;
+    string getCurFolderPath() const;
     Folder *getRoot() const;
     void pwd() const;
     void ls(string path);
@@ -50,7 +50,11 @@ private:
     bool folderNameIsCurrentFolder(string folderName);
     bool folderNameStartPathIsLegal(string folderName);
     vector<string> * parsePath(string path);
-    string concatinatePath(vector<string> *parsedPath, int numberOfFolders);
+
+    string folderAlreadyExists();
+
+
+    Folder *getFolderXFromEnd(vector<string> *parsedPath, unsigned int posFromEnd);
 };
 
 

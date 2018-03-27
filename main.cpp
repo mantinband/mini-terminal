@@ -7,12 +7,12 @@ using namespace std;
 int main() {
     Terminal terminal(cout);
     string input;
-    cout << "$ ";
+    cout << terminal.getCurFolderPath() << "$ ";
     cin >> input;
     while (input != "exit"){
         string path;
         string pathDestination;
-        int pos;
+        size_t pos;
         char val;
 
         switch (stringHash(input)){
@@ -54,7 +54,7 @@ int main() {
             default:
                 cerr << "ERROR: invalid command" << endl; break;
         }
-        cout << "$ ";
+        cout << terminal.getCurFolderPath() << "$ ";
         cin >> input;
     }
 

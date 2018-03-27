@@ -7,11 +7,15 @@
 #IncludeRegexTransform: 
 
 /home/amichai/CLionProjects/ex1/File.cpp
+cstring
+-
 File.h
 /home/amichai/CLionProjects/ex1/File.h
 
 /home/amichai/CLionProjects/ex1/File.h
 iostream
+-
+fstream
 -
 
 /home/amichai/CLionProjects/ex1/Folder.cpp
