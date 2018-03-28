@@ -50,7 +50,13 @@ int main() {
                 terminal.ln(path,pathDestination); break;
             case lproot:
                 terminal.lproot(); break;
-
+            case rm:
+                cin >> path;
+                terminal.remove(path); break;
+            case mv:
+                cin >> path;
+                cin >> pathDestination;
+                terminal.move(path,pathDestination); break;
             default:
                 cerr << "ERROR: invalid command" << endl; break;
         }

@@ -22,6 +22,8 @@ public:
 
     bool hasFolder(string toFind);
 
+    void deleteFile(string &fileToDelete);
+
 public:
     vector<Folder*> &getFolders() ;
     vector<File*> &getFiles() ;

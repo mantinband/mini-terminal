@@ -3,6 +3,8 @@
 //
 
 #include <cstring>
+#include <sstream>
+#include <unistd.h>
 #include "File.h"
 
 const string &File::getName() const {
@@ -70,8 +72,38 @@ string File::filedToWriteToFile(){
 }
 
 ostream &File::cat(ostream &out) {
-    if (ifs.is_open()) {
-        out << ifs.rdbuf() << endl;
+    char c;
+    ifs.seekg(0);
+    c = static_cast<char>(ifs.peek());
+
+    while (c != EOF){
+        out << c;
+        ifs.seekg(1,ios_base::cur);
+        c = static_cast<char>(ifs.peek());
     }
+    out << endl;
     return out;
+}
+
+File *File::copy(string &newFilesName) {
+    File *theCopy = new File(newFilesName);
+    char c;
+    ifs.seekg(0);
+    c = static_cast<char>(ifs.peek());
+
+    for (size_t i=0; c != EOF; i++,c = static_cast<char>(ifs.peek())){
+        theCopy->operator[](new pair<size_t ,char>(i,c));
+        ifs.seekg(1,ios_base::cur);
+    }
+    return theCopy;
+}
+
+File::~File() {
+    if (ifs.is_open()){
+        ifs.close();
+    }
+}
+
+void File::remove() {
+    delete this;
 }

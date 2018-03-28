@@ -20,7 +20,9 @@ enum string_code{
     copyFile,
     ln,
     lproot,
-    other
+    other,
+    rm,
+    mv
 };
 string_code stringHash(const string &str);
 

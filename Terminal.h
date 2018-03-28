@@ -28,11 +28,17 @@ public:
     Folder *getRoot() const;
     void pwd() const;
     void ls(string path);
-    void copy(const string pathSource, const string pathDestination);
+    bool copy(const string pathSource, const string pathDestination);
     void rmdir(string path);
     void lproot() const;
     void ln(const string pathSource, const string pathDestination);
-    Folder *setStartingFolder(stringstream &path);
+
+    void removeFile(string path);
+
+    void remove(string path);
+
+    void move(string pathSource, string pathDestination);
+
 private:
     Folder* root;
     Folder* curFolder;
@@ -47,14 +53,12 @@ private:
 
     string noSuchFile();
     string noSuchFolder();
-    bool folderNameIsCurrentFolder(string folderName);
-    bool folderNameStartPathIsLegal(string folderName);
     vector<string> * parsePath(string path);
 
     string folderAlreadyExists();
 
-
     Folder *getFolderXFromEnd(vector<string> *parsedPath, unsigned int posFromEnd);
+
 };
 
 

@@ -17,6 +17,12 @@ public:
     void operator[](pair<size_t, char> *posAndVal);
     const char operator[](size_t index);
     ostream & cat(ostream &out);
+    File *copy(string &basicString);
+
+    virtual ~File();
+
+    void remove();
+
 private:
     string timeSignature;
     string name;

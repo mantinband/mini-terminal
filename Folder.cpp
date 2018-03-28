@@ -10,7 +10,6 @@ Folder::~Folder() {
     for (vector<File*>::iterator i = files.begin(); i != files.end(); i++){
         delete *i;
     }
-
     for (vector<Folder*>::iterator i = folders.begin(); i != folders.end(); i++){
         delete *i;
     }
@@ -91,5 +90,15 @@ void Folder::deleteFolder(const string &toRemove) {
 
 bool Folder::hasFolder(string toFind) {
     return getFolder(toFind) != NULL;
+}
+
+void Folder::deleteFile(string &toRemove) {
+    for (vector<File*>::iterator i = files.begin(); i != files.end(); i++){
+        if ((*i)->getName() == toRemove) {
+            (*i)->remove();
+            files.erase(i);
+            return;
+        }
+    }
 }
 

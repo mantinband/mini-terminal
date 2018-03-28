@@ -52,8 +52,6 @@ void Terminal::write(const string path, const size_t pos, const char val) {
     }
 }
 
-
-
 void Terminal::cat(const string path) {
     vector<string> *parsedPath = parsePath(path);
 
@@ -157,13 +155,23 @@ void Terminal::ls(string path) {
 void Terminal::rmdir(string path) {
     vector<string> *parsedPath = parsePath(path);
     string toRemove = parsedPath->at(parsedPath->size()-1);
-    try {
-        Folder *toRemoveFatherFolder = getFolderXFromEnd(parsedPath, 1);
 
-        if (toRemoveFatherFolder->folderExists(toRemove)) {
-            toRemoveFatherFolder->deleteFolder(toRemove);
+    try {
+        if (parsedPath->size() == 1){
+            if (curFolder->folderExists(parsedPath->at(0))){
+                curFolder->deleteFolder(parsedPath->at(0));
+            } else {
+                throw noSuchFile();
+            }
         } else {
-            throw noSuchFolder();
+
+            Folder *toRemoveFatherFolder = getFolderXFromEnd(parsedPath, 1);
+
+            if (toRemoveFatherFolder->folderExists(toRemove)) {
+                toRemoveFatherFolder->deleteFolder(toRemove);
+            } else {
+                throw noSuchFolder();
+            }
         }
     } catch (string exceptionStatement){
         cerr << exceptionStatement << endl;
@@ -171,7 +179,6 @@ void Terminal::rmdir(string path) {
 }
 
 void Terminal::lproot() const {
-
 }
 
 void Terminal::touch( string path) {
@@ -204,8 +211,48 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
 
 }
 
-void Terminal::copy(const string pathSource, const string pathDestination) {
+bool Terminal::copy(const string pathSource, const string pathDestination) {
+    vector<string> *parsedPathSource = parsePath(pathSource);
+    vector<string> *parsedPathDestination = parsePath(pathDestination);
+    Folder *sourceFolder = NULL;
+    Folder *destinationFolder = NULL;
 
+    try {
+        if (parsedPathSource->size() == 1){
+            if (curFolder->fileExists(parsedPathSource->at(0))){
+                sourceFolder = curFolder;
+            } else {
+                throw noSuchFile();
+            }
+        }
+
+        if (parsedPathDestination->size() == 1){
+            if (curFolder->fileExists(parsedPathDestination->at(0))) {
+                curFolder->deleteFile(parsedPathDestination->at(0));
+            }
+            destinationFolder = curFolder;
+        }
+        if (!sourceFolder) {
+            sourceFolder = getFolderXFromEnd(parsedPathSource, 1);           //folder containing file to copy
+        }
+        if (!destinationFolder) {
+            destinationFolder = getFolderXFromEnd(parsedPathDestination, 1); // folder destination
+        }
+        if (sourceFolder->fileExists(parsedPathSource->at(parsedPathSource->size()-1))){
+            if (destinationFolder->fileExists(parsedPathDestination->at(parsedPathDestination->size()-1))){
+                destinationFolder->deleteFile(parsedPathDestination->at(parsedPathDestination->size()-1));
+            }
+            destinationFolder->getFiles().push_back(
+                    sourceFolder->getFile(parsedPathSource->at(parsedPathSource->size() - 1))->copy(
+                            parsedPathDestination->at(parsedPathDestination->size() - 1)));
+        } else {
+            throw noSuchFile();
+        }
+    } catch (string exceptionstatement){
+        cerr << exceptionstatement << endl;
+        return false;
+    }
+    return true;
 }
 
 ostream &Terminal::getOutputStream() const {
@@ -279,38 +326,6 @@ string Terminal::noSuchFolder() {
     return "ERROR: no such folder";
 }
 
-bool Terminal::folderNameIsCurrentFolder(string folderName) {
-    if (curFolder->getName()+"/" == folderName || root->getName() + "/" == folderName){
-        return true;
-    }
-    return false;
-}
-
-bool Terminal::folderNameStartPathIsLegal(string folderName) {
-    if (folderName == root->getName() || folderName == curFolder->getName()) {
-        return true;
-    }
-    return false;
-}
-
-Folder *Terminal::setStartingFolder(stringstream &s) {
-    Folder *f;
-    string folderName;
-
-    getline(s, folderName, '/');
-    if (folderNameStartPathIsLegal(folderName)) {
-        if (folderName == root->getName()){
-            f = root;
-        } else {
-            f = curFolder;
-        }
-    } else {
-        throw noSuchFolder();
-    }
-
-    return f;
-}
-
 vector<string> *Terminal::parsePath(string path) {
     stringstream s(path);
     string folderName;
@@ -356,4 +371,34 @@ Folder *Terminal::getFolderXFromEnd(vector<string> *parsedPath, unsigned int pos
         }
     }
     return f;
+}
+
+void Terminal::remove(string path) {
+    vector<string> *parsedPath = parsePath(path);
+    Folder *f;
+    try{
+        if (parsedPath->size() == 1){
+            if (curFolder->fileExists(parsedPath->at(0))){
+                curFolder->deleteFile(parsedPath->at(0));
+            } else {
+                throw noSuchFile();
+            }
+        } else {
+            f = getFolderXFromEnd(parsedPath, 1);
+            if (f->fileExists(parsedPath->at(parsedPath->size() - 1))) {
+                f->deleteFile(parsedPath->at(parsedPath->size() - 1));
+            }
+        }
+    } catch (string exceptionStatement){
+        cerr << exceptionStatement << endl;
+    }
+}
+
+void Terminal::move(string pathSource, string pathDestination) {
+    vector<string> *parsedPath = parsePath(pathSource);
+
+    if (copy(pathSource,pathDestination)){
+        Folder *f = getFolderXFromEnd(parsedPath,1);
+        f->deleteFile(parsedPath->at(parsedPath->size()-1));
+    }
 }

@@ -13,8 +13,10 @@ string_code stringHash(const string &str){
     if (str == "rmdir") return rmdir;
     if (str == "chdir") return chdir;
     if (str == "ls") return ls;
-    if (str == "copyFile") return copyFile;
+    if (str == "copy") return copyFile;
     if (str == "ln") return ln;
     if (str == "lproot") return lproot;
+    if (str == "remove") return rm;
+    if (str == "move") return mv;
     return other;
 }

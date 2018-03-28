@@ -9,6 +9,10 @@
 /home/amichai/CLionProjects/ex1/File.cpp
 cstring
 -
+sstream
+-
+unistd.h
+-
 File.h
 /home/amichai/CLionProjects/ex1/File.h
 
