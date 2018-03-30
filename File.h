@@ -12,31 +12,47 @@ using namespace std;
 
 class File {
 public:
-    File(string fileName);
-    File(string fileName,ifstream *ifs, ofstream *ofs, int *numberOfReferences);
-    File(const File& rhs);
+    File(string fileName);                                                          //c'tor
+    File(string fileName,ifstream *ifs, ofstream *ofs, int *numberOfReferences);    //c'tor for hard link
+    File(const File& rhs);                                                          //copy c'tor
     File& operator=(const File& rhs);
-    virtual ~File();
+    virtual ~File();                                                                //d'tor
 
-    void operator[](pair<size_t, char> *posAndVal);
+    void operator[](pair<size_t, char> *posAndVal); //write single character to file. receives position and value
+    const char operator[](size_t index);            //reads single character from specified position.
 
-    char *getTimeSignature() const;
+    void touch();                                   //updates files time stamp
+    void remove();                                  //removes folder
+    ostream &cat(ostream &out);                     //prints file content
+    string wc();                                    //returns count of words, lines and characters
+    File *copy(string &basicString);                //return a copy by value of current file
 
-    const char operator[](size_t index);
-
-    void touch();
-    ostream &cat(ostream &out);
-    File *copy(string &basicString);
-    void remove();
 
     const string &getName() const;
-    void setName(const string &name);
-    int * getNumberOfReferences() const;
     ifstream *getIfs() const;
     ofstream *getOfs() const;
-    void link();
-    string wc();
 
+    int * getNumberOfReferences() const;
+    char *getTimeSignature() const;
+
+
+    class failedToOpenFile : exception {
+        virtual const char* what() const throw() {
+            return "ERROR: failed to open file";
+        }
+    };
+
+    class failedToReadFromFile : exception {
+        virtual const char* what() const throw() {
+            return "ERROR: failed to read from file";
+        }
+    };
+
+    class failedToWriteToFile : exception {
+        virtual const char* what() const throw() {
+            return "ERROR: failed to write to file";
+        }
+    };
 private:
     string name;
     ifstream *ifs;
@@ -45,9 +61,7 @@ private:
     int *numberOfReferences;
     char *timeSignature;
 
-    string failedToOpenFile();
-    string failedToReadFromFile();
-    string filedToWriteToFile();
+
 
     void updateTime();
     int numberOfWords();

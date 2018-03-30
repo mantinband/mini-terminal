@@ -13,53 +13,61 @@ using namespace std;
 
 class Terminal {
 public:
-    Terminal(ostream& out);
-    Terminal(const Terminal& rhs);
+    Terminal(ostream& out);                     //c'tor
+    Terminal(const Terminal& rhs);              //copy c'tor
     Terminal& operator=(const Terminal& rhs);
-    virtual ~Terminal();
-    void touch(string path);
-    void read(const string path, const int pos) ;
-    void write(const string path, const size_t pos, const char val);
-    void cat(const string path);
-    void mkdir(string path);
-    void chdir(string path);
+    virtual ~Terminal();                        //d'tor
+
+    void touch(string path);                                            //changes files time stamp
+    void read(const string path, const int pos) ;                       //reads single character from chosen position
+    void write(const string path, const size_t pos, const char val);    //writes single character to chosen postion
+    void cat(const string path);                                        //prints files content
+    void mkdir(string path);                                            //creates directory
+    void chdir(string path);                                            //changes current directory
+    void pwd() const;                                                   //prints current folders path
+    void ls(string path);                                               //prints files contents
+    bool copy(const string pathSource, const string pathDestination);   //copys file from source to destination
+    void rmdir(string path);                                            //removes directory
+    void lproot() const;                                                //prints all files and folders
+    void ln(const string pathSource, const string pathDestination);     //created hard link between file in source and destination
+    void wc(string path);                                               //prints number of words, lines and character in file
+    void remove(string path);                                           //removes file
+    void move(string pathSource, string pathDestination);               //moves file from source to destination
+
     ostream &getOutputStream() const;
     string getCurFolderPath() const;
     Folder *getRoot() const;
-    void pwd() const;
-    void ls(string path);
-    bool copy(const string pathSource, const string pathDestination);
-    void rmdir(string path);
-    void lproot() const;
-    void ln(const string pathSource, const string pathDestination);
 
-    void removeFile(string path);
+    struct noSuchFile : public exception {
+        virtual const char* what() const throw(){
+            return "ERROR: no such file";
+        }
+    };
 
-    void remove(string path);
+    struct noSuchFolder : public exception{
+        virtual const char* what() const throw() {
+            return "ERROR: no such folder";
+        }
+    };
 
-    void move(string pathSource, string pathDestination);
-
-    void wc(string path);
-
+    struct folderAlreadyExists : public exception{
+        virtual const char* what() const throw(){
+            return "ERROR : folder already exists";
+        }
+    };
 private:
     Folder* root;
     Folder* curFolder;
     ostream &outputStream;
     string curFolderPath;
-    bool parsedPathIsInFolders(Folder *f, string folderName);
-    bool parsedPathIsInFiles(Folder *f,string parsedPath);
 
-    void printFolder(Folder *f) const;
+    void printFolder(Folder *f) const;      //prints folder's content;
+    Folder *getFolder(string folderPath);   //returns chosen folder
+    vector<string> * parsePath(string path);    //breaks string containing path into vector containing parsed path
+    Folder *getFolderXFromEnd(vector<string> *parsedPath, unsigned int posFromEnd); //receives vector with parsed path
+                                                                                    //and returns the folder that is located
+                                                                                    //x spots from end
 
-    Folder *getFolder(string folderPath);
-
-    string noSuchFile();
-    string noSuchFolder();
-    vector<string> * parsePath(string path);
-
-    string folderAlreadyExists();
-
-    Folder *getFolderXFromEnd(vector<string> *parsedPath, unsigned int posFromEnd);
 
 };
 

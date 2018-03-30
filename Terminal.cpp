@@ -22,57 +22,69 @@ Terminal &Terminal::operator=(const Terminal &rhs) {
 }
 
 void Terminal::read(const string path, const int pos) {
-    Folder *f;
     vector<string> *parsedPath = parsePath(path);
 
     try {
-        f = getFolderXFromEnd(parsedPath,1);
-        if (f->fileExists(parsedPath->at(parsedPath->size() - 1))) {
-            outputStream << f->getFile(parsedPath->at(parsedPath->size() - 1))->operator[](pos) << endl;
+        if (parsedPath->size() == 1){
+            if (curFolder->fileExists(parsedPath->at(0))){      //if file is in current folder
+                outputStream << curFolder->getFile(parsedPath->at(0))->operator[](pos) << endl;
+            } else {
+                throw noSuchFile();
+            }
         } else {
-            throw noSuchFile();
+            Folder *f = getFolderXFromEnd(parsedPath, 1);
+            if (f->fileExists(parsedPath->at(parsedPath->size() - 1))) {
+                outputStream << f->getFile(parsedPath->at(parsedPath->size() - 1))->operator[](pos) << endl;
+            } else {
+                throw noSuchFile();
+            }
         }
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
     }
 }
 
 void Terminal::write(const string path, const size_t pos, const char val) {
-    Folder *f;
     vector<string> *parsedPath = parsePath(path);
-
-    if (parsedPath->size() == 1 && curFolder->fileExists(parsedPath->at(0))){
-        curFolder->getFile(parsedPath->at(parsedPath->size() - 1))->operator[](new pair<size_t, char>(pos, val));
-    } else {
-        try {
-            f = getFolderXFromEnd(parsedPath, 1);
-
+    try {
+        if (parsedPath->size() == 1){
+            if (curFolder->fileExists(parsedPath->at(0))) { //if file is in current folder
+                curFolder->getFile(parsedPath->at(parsedPath->size() - 1))->operator[](new pair<size_t, char>(pos, val));
+            } else {
+                throw noSuchFile();
+            }
+        } else {
+            Folder *f = getFolderXFromEnd(parsedPath, 1);
             if (f->fileExists(parsedPath->at(parsedPath->size() - 1))) {
                 f->getFile(parsedPath->at(parsedPath->size() - 1))->operator[](new pair<size_t, char>(pos, val));
             } else {
                 throw noSuchFile();
             }
-        } catch (string exceptionStatement) {
-            cerr << exceptionStatement << endl;
         }
+    } catch (exception &e) {
+        cerr << e.what() << endl;
     }
 }
+
 void Terminal::cat(const string path) {
     vector<string> *parsedPath = parsePath(path);
-
-    if (parsedPath->size() == 1 && curFolder->fileExists(parsedPath->at(0))) {
-        curFolder->getFile(parsedPath->at(0))->cat(outputStream);
-    } else {
-        try {
+    try {
+        if (parsedPath->size() == 1) {      //if file is in current folder
+            if (curFolder->fileExists(parsedPath->at(0))) {
+                curFolder->getFile(parsedPath->at(0))->cat(outputStream);
+            } else {
+                throw noSuchFile();
+            }
+        } else {
             Folder *f = getFolderXFromEnd(parsedPath, 1);
             if (f->fileExists(parsedPath->at(parsedPath->size() - 1))) {
                 f->getFile(parsedPath->at(parsedPath->size() - 1))->cat(outputStream);
             } else {
                 throw noSuchFolder();
             }
-        } catch (string exceptionStatement) {
-            cerr << exceptionStatement << endl;
         }
+    } catch (exception &e) {
+            cerr << e.what() << endl;
     }
 }
 
@@ -82,7 +94,7 @@ void Terminal::mkdir(string path) {
         Folder *f;
 
         if (parsedPath->size() == 1){
-            if (curFolder->hasFolder(parsedPath->at(0))){
+            if (curFolder->hasFolder(parsedPath->at(0))){           //if file is in current folder
                 throw folderAlreadyExists();
             }
             curFolder->getFolders().push_back(new Folder(parsedPath->at(0)));
@@ -94,8 +106,8 @@ void Terminal::mkdir(string path) {
         }
         f->getFolders().push_back(new Folder(parsedPath->at(parsedPath->size() - 1)));
         return;
-    } catch (string exceptionStatement) {
-        cerr << exceptionStatement << endl;
+    } catch (exception &e) {
+        cerr << e.what() << endl;
     }
 }
 
@@ -126,8 +138,8 @@ void Terminal::chdir(string path) {
                 curFolderPath += "/" + parsedPath->at(i);
             }
         }
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
     }
 }
 
@@ -155,8 +167,8 @@ void Terminal::ls(string path) {
                 Folder *f = getFolder(path);
                 outputStream << path + ":" << endl;
                 printFolder(f);
-            } catch (string exceptionStatement) {
-                cerr << exceptionStatement << endl;
+            } catch (exception &e) {
+                cerr << e.what() << endl;
             }
         }
     }
@@ -168,7 +180,7 @@ void Terminal::rmdir(string path) {
 
     try {
         if (parsedPath->size() == 1){
-            if (curFolder->folderExists(parsedPath->at(0))){
+            if (curFolder->hasFolder(parsedPath->at(0))){    //if file is in current folder
                 curFolder->deleteFolder(parsedPath->at(0));
             } else {
                 throw noSuchFile();
@@ -177,14 +189,14 @@ void Terminal::rmdir(string path) {
 
             Folder *toRemoveFatherFolder = getFolderXFromEnd(parsedPath, 1);
 
-            if (toRemoveFatherFolder->folderExists(toRemove)) {
+            if (toRemoveFatherFolder->hasFolder(toRemove)) {
                 toRemoveFatherFolder->deleteFolder(toRemove);
             } else {
                 throw noSuchFolder();
             }
         }
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
     }
 }
 
@@ -201,7 +213,7 @@ void Terminal::touch( string path) {
         Folder *f;
         vector<string> *parsedPath = parsePath(path);
 
-        if (parsedPath->size() == 1) {
+        if (parsedPath->size() == 1) {      //if file is in current folder
             if (curFolder->fileExists(parsedPath->at(0))) {
                 curFolder->getFile(parsedPath->at(0))->touch();
             } else {
@@ -217,8 +229,8 @@ void Terminal::touch( string path) {
         } else {
             f->getFiles().push_back(new File(parsedPath->at(parsedPath->size() - 1)));
         }
-    } catch (string exeptionStatement){
-        cerr << exeptionStatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
     }
 }
 
@@ -230,7 +242,7 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
     Folder *sourceFolder;
 
     try {
-        if (parsedPathSource->size() == 1){
+        if (parsedPathSource->size() == 1){                 //if file is in current folder
             if (curFolder->fileExists(parsedPathSource->at(0))){
                 fileToHardLink = curFolder->getFile(parsedPathSource->at(0));
             } else {
@@ -258,7 +270,7 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
                 destinationFolder->getFile(parsedPathDestination->at(parsedPathDestination->size()-1))->remove();
             }
         }
-    } catch (string exceptionStatement){
+    } catch (exception &e){
         return;
     }
     destinationFolder->getFiles().push_back(new File(parsedPathDestination->at(parsedPathDestination->size()-1),
@@ -273,7 +285,7 @@ bool Terminal::copy(const string pathSource, const string pathDestination) {
     Folder *destinationFolder = NULL;
 
     try {
-        if (parsedPathSource->size() == 1){
+        if (parsedPathSource->size() == 1){//if file is in current folder
             if (curFolder->fileExists(parsedPathSource->at(0))){
                 sourceFolder = curFolder;
             } else {
@@ -303,8 +315,8 @@ bool Terminal::copy(const string pathSource, const string pathDestination) {
         } else {
             throw noSuchFile();
         }
-    } catch (string exceptionstatement){
-        cerr << exceptionstatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
         return false;
     }
     return true;
@@ -320,14 +332,6 @@ string Terminal::getCurFolderPath() const {
 
 Folder *Terminal::getRoot() const {
     return root;
-}
-
-bool Terminal::parsedPathIsInFiles(Folder *f, string parsedPath) {
-    return f->fileExists(parsedPath);
-}
-
-bool Terminal::parsedPathIsInFolders(Folder *f, string folderName) {
-    return f->folderExists(folderName);
 }
 
 void Terminal::printFolder(Folder *f) const {
@@ -357,7 +361,7 @@ Folder *Terminal::getFolder(string folderPath) {
     i++;
 
     while (i != parsedPath->end()){
-        if (parsedPathIsInFolders(f,*i)){
+        if (f->hasFolder(*i)){
             f = f->getFolder(*i);
         } else {
             throw noSuchFolder();
@@ -366,14 +370,6 @@ Folder *Terminal::getFolder(string folderPath) {
     }
 
     return f;
-}
-
-string Terminal::noSuchFile() {
-    return "ERROR: no such file name";
-}
-
-string Terminal::noSuchFolder() {
-    return "ERROR: no such folder";
 }
 
 vector<string> *Terminal::parsePath(string path) {
@@ -391,10 +387,6 @@ vector<string> *Terminal::parsePath(string path) {
     } while (!s.eof());
 
     return parsedPath;
-}
-
-string Terminal::folderAlreadyExists() {
-    return "ERROR: folder already exists";
 }
 
 Folder *Terminal::getFolderXFromEnd(vector<string> *parsedPath, unsigned int posFromEnd) {
@@ -439,8 +431,8 @@ void Terminal::remove(string path) {
                 f->deleteFile(parsedPath->at(parsedPath->size() - 1));
             }
         }
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
     }
 }
 
@@ -471,7 +463,7 @@ void Terminal::wc(string path) {
                 throw noSuchFile();
             }
         }
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception &e){
+        cerr << e.what() << endl;
     }
 }

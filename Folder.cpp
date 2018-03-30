@@ -25,24 +25,16 @@ bool Folder::fileExists(const string fileName) {
     }
     return false;
 }
-bool Folder::folderExists(const string folderName) {
-    for (vector<Folder*>::iterator i = folders.begin(); i != folders.end(); i++){
-        if ((*i)->getName() == folderName){
-            return true;
-        }
-    }
-    return false;
-}
 
 const string &Folder::getName() const {
     return name;
 }
 
-vector<Folder*> &Folder::getFolders(){
+vector<Folder *> & Folder::getFolders(){
     return folders;
 }
 
-vector<File*> &Folder::getFiles() {
+vector<File *> & Folder::getFiles(){
     return files;
 }
 
@@ -131,5 +123,14 @@ void Folder::printRec(string path, ostream &out) {
 void Folder::clearStringStream(stringstream &s) {
     s.clear();
     s.str(string());
+}
+
+Folder::Folder(const Folder &rhs) {
+    name = rhs.getName();
+}
+
+Folder &Folder::operator=(const Folder &rhs) {
+    name = rhs.getName();
+    return *this;
 }
 

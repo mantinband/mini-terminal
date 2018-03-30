@@ -24,13 +24,27 @@ File::File(string fileName)
         if (!ofs->is_open() || !ifs->is_open()){
             throw failedToOpenFile();
         }
-    } catch (string exceptionStatement){
-        throw exceptionStatement;
+    } catch (exception e){
+        cerr << e.what() << endl;
     }
 }
 
-void File::setName(const string &name) {
-    File::name = name;
+File::File(const File &rhs) {
+    ifs = rhs.getIfs();
+    ofs = rhs.getOfs();
+    numberOfReferences = rhs.getNumberOfReferences();
+    name = rhs.getName();
+    updateTime();
+}
+
+File &File::operator=(const File &rhs) {
+    ifs = rhs.getIfs();
+    ofs = rhs.getOfs();
+    numberOfReferences = rhs.getNumberOfReferences();
+    name = rhs.getName();
+    updateTime();
+
+    return *this;
 }
 
 const string &File::getName() const {
@@ -42,22 +56,19 @@ void File::touch() {
 }
 
 
-void File::link(){
-    numberOfReferences++;
-}
-
 
 void File::operator[](pair<size_t, char> *posAndVal) {
     try {
         ofs->seekp(posAndVal->first);
         if (!ofs->good()) {
-            throw filedToWriteToFile();
+            throw failedToWriteToFile();
         }
         *ofs << posAndVal->second;
         ofs->seekp(0);
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception e){
+        cerr << e.what() << endl;
     }
+    updateTime();
 }
 
 const char File::operator[](size_t index) {
@@ -71,22 +82,10 @@ const char File::operator[](size_t index) {
         ifs->get(c);
         ifs->seekg(0);
         return c;
-    } catch (string exceptionStatement){
-        cerr << exceptionStatement << endl;
+    } catch (exception e){
+        cerr << e.what() << endl;
     }
     return c;
-}
-
-string File::failedToOpenFile(){
-    return "ERROR: failed to open file";
-}
-
-string File::failedToReadFromFile(){
-    return "ERROR: failed to read from file";
-}
-
-string File::filedToWriteToFile(){
-    return "ERROR: filed to write to file";
 }
 
 ostream &File::cat(ostream &out) {
@@ -216,22 +215,4 @@ int File:: numberOfChars(){
     }
 
     return charCount;
-}
-
-File::File(const File &rhs) {
-    ifs = rhs.getIfs();
-    ofs = rhs.getOfs();
-    numberOfReferences = rhs.getNumberOfReferences();
-    name = rhs.getName();
-    updateTime();
-}
-
-File &File::operator=(const File &rhs) {
-    ifs = rhs.getIfs();
-    ofs = rhs.getOfs();
-    numberOfReferences = rhs.getNumberOfReferences();
-    name = rhs.getName();
-    updateTime();
-
-    return *this;
 }
