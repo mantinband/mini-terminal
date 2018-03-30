@@ -26,7 +26,6 @@ public:
 
     void printRec(string path, ostream &out);
 
-public:
     vector<Folder*> &getFolders() ;
     vector<File*> &getFiles() ;
     vector<Folder*>::iterator getFirstFolder();

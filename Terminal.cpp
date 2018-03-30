@@ -16,6 +16,11 @@ Terminal::~Terminal() {
     delete(root);
 }
 
+Terminal &Terminal::operator=(const Terminal &rhs) {
+    *this = rhs;
+    return *this;
+}
+
 void Terminal::read(const string path, const int pos) {
     Folder *f;
     vector<string> *parsedPath = parsePath(path);
@@ -52,7 +57,6 @@ void Terminal::write(const string path, const size_t pos, const char val) {
         }
     }
 }
-
 void Terminal::cat(const string path) {
     vector<string> *parsedPath = parsePath(path);
 
@@ -71,6 +75,7 @@ void Terminal::cat(const string path) {
         }
     }
 }
+
 void Terminal::mkdir(string path) {
     try {
         vector<string> *parsedPath = parsePath(path);
@@ -317,11 +322,6 @@ Folder *Terminal::getRoot() const {
     return root;
 }
 
-Terminal &Terminal::operator=(const Terminal &rhs) {
-    *this = rhs;
-    return const_cast<Terminal &>(rhs);
-}
-
 bool Terminal::parsedPathIsInFiles(Folder *f, string parsedPath) {
     return f->fileExists(parsedPath);
 }
@@ -448,5 +448,30 @@ void Terminal::move(string pathSource, string pathDestination) {
 
     if (copy(pathSource,pathDestination)){
         remove(pathSource);
+    }
+}
+
+void Terminal::wc(string path) {
+    vector<string> *parsedPath = parsePath(path);
+
+    try {
+        if (parsedPath->size() == 1) {
+            if (curFolder->fileExists(parsedPath->at(0))) {
+                outputStream << "words" << "\t" << "lines" << "\t" << "characters" << endl;
+                outputStream << curFolder->getFile(parsedPath->at(0))->wc() << endl;
+            } else {
+                throw noSuchFile();
+            }
+        } else {
+            Folder *f = getFolderXFromEnd(parsedPath,1);
+            if (f->fileExists(parsedPath->at(parsedPath->size()-1))){
+                outputStream << "words" << "\t" << "lines" << "\t" << "characters" << endl;
+                outputStream << f->getFile(parsedPath->at(parsedPath->size()-1))->wc() << endl;
+            } else {
+                throw noSuchFile();
+            }
+        }
+    } catch (string exceptionStatement){
+        cerr << exceptionStatement << endl;
     }
 }

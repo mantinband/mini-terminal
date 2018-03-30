@@ -22,8 +22,10 @@ enum string_code{
     lproot,
     other,
     rm,
-    mv
+    mv,
+    wordCount,
+    help
 };
 string_code stringHash(const string &str);
-
+void printCommands();
 #endif //EX1_MAINFUNCTIONS_H

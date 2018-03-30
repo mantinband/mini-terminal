@@ -14,6 +14,8 @@ class File {
 public:
     File(string fileName);
     File(string fileName,ifstream *ifs, ofstream *ofs, int *numberOfReferences);
+    File(const File& rhs);
+    File& operator=(const File& rhs);
     virtual ~File();
 
     void operator[](pair<size_t, char> *posAndVal);
@@ -33,18 +35,24 @@ public:
     ifstream *getIfs() const;
     ofstream *getOfs() const;
     void link();
+    string wc();
 
 private:
     string name;
     ifstream *ifs;
     ofstream *ofs;
+
     int *numberOfReferences;
     char *timeSignature;
+
     string failedToOpenFile();
     string failedToReadFromFile();
     string filedToWriteToFile();
 
     void updateTime();
+    int numberOfWords();
+    int numberOfLines();
+    int numberOfChars();
 };
 
 

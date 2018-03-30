@@ -7,6 +7,7 @@ using namespace std;
 int main() {
     Terminal terminal(cout);
     string input;
+    cout << "Type --help to view commands" << endl;
     cout << terminal.getCurFolderPath() << "$ ";
     cin >> input;
     while (input != "exit"){
@@ -16,6 +17,8 @@ int main() {
         char val;
 
         switch (stringHash(input)){
+            case help:
+                printCommands(); break;
             case touch:
                 cin >> path;
                 terminal.touch(path); break;
@@ -57,8 +60,12 @@ int main() {
                 cin >> path;
                 cin >> pathDestination;
                 terminal.move(path,pathDestination); break;
+            case wordCount:
+                cin >> path;
+                terminal.wc(path); break;
             default:
-                cerr << "ERROR: invalid command" << endl; break;
+                cerr << "ERROR: invalid command. ";
+                cout << "Type --help to view commands" << endl; break;
         }
         cout << terminal.getCurFolderPath() << "$ ";
         cin >> input;

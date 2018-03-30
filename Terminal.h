@@ -39,6 +39,8 @@ public:
 
     void move(string pathSource, string pathDestination);
 
+    void wc(string path);
+
 private:
     Folder* root;
     Folder* curFolder;
