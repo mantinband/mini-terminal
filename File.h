@@ -43,6 +43,8 @@ private:
     string failedToOpenFile();
     string failedToReadFromFile();
     string filedToWriteToFile();
+
+    void updateTime();
 };
 
 

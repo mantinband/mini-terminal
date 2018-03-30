@@ -10,17 +10,14 @@
 
 File::File(string fileName,ifstream* ifs, ofstream* ofs, int *numberOfReferences)
         :name(fileName),ifs(ifs), ofs(ofs), numberOfReferences(numberOfReferences) {
-    time_t curTime = time(0);
-    timeSignature = ctime(&curTime);
+    updateTime();
     *numberOfReferences = *numberOfReferences+1;
 }
 
 File::File(string fileName)
 :name(fileName),ifs(new ifstream),ofs(new ofstream),numberOfReferences(new int[1]){
     *numberOfReferences = 1;
-    time_t curTime = time(0);
-    timeSignature = new char [strlen(ctime(&curTime))];
-    strcpy(timeSignature,ctime(&curTime));
+    updateTime();
     try {
         ofs->open(fileName.c_str());
         ifs->open(fileName.c_str());
@@ -41,8 +38,7 @@ const string &File::getName() const {
 }
 
 void File::touch() {
-    time_t curTime = time(0);
-    timeSignature = ctime(&curTime);
+    updateTime();
 }
 
 
@@ -150,4 +146,10 @@ int* File::getNumberOfReferences() const {
 
 char *File::getTimeSignature() const {
     return timeSignature;
+}
+
+void File::updateTime() {
+    time_t curTime = time(0);
+    timeSignature = new char [strlen(ctime(&curTime))];
+    strcpy(timeSignature,ctime(&curTime));
 }

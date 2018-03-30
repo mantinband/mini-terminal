@@ -122,6 +122,10 @@ void Folder::printRec(string path, ostream &out) {
         s << "|" << (*i)->getTimeSignature();
         out << setw(15) << left << s.str();
     }
+
+    for (vector<Folder *>::iterator i = folders.begin(); i != folders.end(); i++){
+        (*i)->printRec(path+"/"+name,out);
+    }
 }
 
 void Folder::clearStringStream(stringstream &s) {

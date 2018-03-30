@@ -188,7 +188,7 @@ void Terminal::lproot() const {
     outputStream << setw(15) << left << "|HARD-LINKS";
     outputStream << setw(15) << left << "|LAST EDIT" << endl;
     outputStream << "---------------+--------------+----------------------" << endl;
-    root->printRec(root->getName(),outputStream);
+    root->printRec("",outputStream);
 }
 
 void Terminal::touch( string path) {
@@ -228,7 +228,6 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
         if (parsedPathSource->size() == 1){
             if (curFolder->fileExists(parsedPathSource->at(0))){
                 fileToHardLink = curFolder->getFile(parsedPathSource->at(0));
-                cout << "linked 225" << endl;
             } else {
                 throw noSuchFile();
             }
@@ -238,7 +237,6 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
                 curFolder->deleteFile(parsedPathDestination->at(parsedPathDestination->size()-1));
             }
             destinationFolder = curFolder;
-            cout << "linked 232" << endl;
         }
 
         if (fileToHardLink == NULL) {
@@ -246,7 +244,6 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
             if (sourceFolder->fileExists(parsedPathSource->at(parsedPathSource->size() -1))){
                 fileToHardLink = sourceFolder->getFile(parsedPathSource->at(parsedPathSource->size()-1));
             } else {
-                cout << "240" <<endl;
                 throw noSuchFile();
             }
         }
@@ -257,7 +254,6 @@ void Terminal::ln(const string pathSource, const string pathDestination) {
             }
         }
     } catch (string exceptionStatement){
-        cerr << exceptionStatement << "came from here" << endl;
         return;
     }
     destinationFolder->getFiles().push_back(new File(parsedPathDestination->at(parsedPathDestination->size()-1),
