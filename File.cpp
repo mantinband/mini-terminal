@@ -102,6 +102,7 @@ File::~File() {
     if (ifs.is_open()){
         ifs.close();
     }
+    std::remove(name.c_str());
 }
 
 void File::remove() {

@@ -95,26 +95,30 @@ void Terminal::mkdir(string path) {
 
 void Terminal::chdir(string path) {
     vector<string> *parsedPath = parsePath(path);
-
-    if (parsedPath->size() == 1 && parsedPath->at(0) == curFolder->getName()){
-        return;
-    }
-
     try {
-        if (parsedPath->size() != 1){
-            curFolder = getFolderXFromEnd(parsedPath,0);
-            if (parsedPath->at(0) == root->getName()) {
-                curFolderPath = path;
+        if (parsedPath->size() == 1) {
+            if (parsedPath->at(0) == curFolder->getName()){ //destination folder is current folder
+                return;
+            } else if (curFolder->hasFolder(parsedPath->at(0))){
+                curFolder = curFolder->getFolder(parsedPath->at(0));
+                curFolderPath += "/" + parsedPath->at(0);
+                return;
+            } else if (parsedPath->at(0) == root->getName()){
+                curFolder = root;
+                curFolderPath = root->getName();
+                return;
             } else {
-                for (unsigned int i = 1; i < parsedPath->size(); i++) {
-                    curFolderPath += "/" + parsedPath->at(i);
-                }
+                throw noSuchFolder();
             }
-        } else if (parsedPath->at(0) == root->getName()){
-            curFolder = root;
-            curFolderPath = root->getName();
+        }
+
+        curFolder = getFolderXFromEnd(parsedPath,0);
+        if (parsedPath->at(0) == root->getName()) {
+            curFolderPath = path;
         } else {
-            throw noSuchFolder();
+            for (unsigned int i = 1; i < parsedPath->size(); i++) {
+                curFolderPath += "/" + parsedPath->at(i);
+            }
         }
     } catch (string exceptionStatement){
         cerr << exceptionStatement << endl;
@@ -395,10 +399,8 @@ void Terminal::remove(string path) {
 }
 
 void Terminal::move(string pathSource, string pathDestination) {
-    vector<string> *parsedPath = parsePath(pathSource);
 
     if (copy(pathSource,pathDestination)){
-        Folder *f = getFolderXFromEnd(parsedPath,1);
-        f->deleteFile(parsedPath->at(parsedPath->size()-1));
+        remove(pathSource);
     }
 }
