@@ -24,6 +24,8 @@ public:
 
     void deleteFile(string &fileToDelete);
 
+    void printRec(string path, ostream &out);
+
 public:
     vector<Folder*> &getFolders() ;
     vector<File*> &getFiles() ;

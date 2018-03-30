@@ -183,6 +183,9 @@ void Terminal::rmdir(string path) {
 }
 
 void Terminal::lproot() const {
+    outputStream << "FILE" << "\t\t" << "HARD-LINKS" << "\t\t" << "LAST EDIT" << endl;
+    outputStream << "---------------------------------------------------------" << endl;
+    root->printRec(root->getName(),outputStream);
 }
 
 void Terminal::touch( string path) {
@@ -212,7 +215,51 @@ void Terminal::touch( string path) {
 }
 
 void Terminal::ln(const string pathSource, const string pathDestination) {
+    vector<string> *parsedPathSource = parsePath(pathSource);
+    vector<string> *parsedPathDestination = parsePath(pathDestination);
+    Folder *destinationFolder = NULL;
+    File *fileToHardLink = NULL;
+    Folder *sourceFolder;
 
+    try {
+        if (parsedPathSource->size() == 1){
+            if (curFolder->fileExists(parsedPathSource->at(0))){
+                fileToHardLink = curFolder->getFile(parsedPathSource->at(0));
+                cout << "linked 225" << endl;
+            } else {
+                throw noSuchFile();
+            }
+        }
+        if (parsedPathDestination->size() == 1){
+            if (curFolder->fileExists(parsedPathDestination->at(parsedPathDestination->size()-1))){
+                curFolder->deleteFile(parsedPathDestination->at(parsedPathDestination->size()-1));
+            }
+            destinationFolder = curFolder;
+            cout << "linked 232" << endl;
+        }
+
+        if (fileToHardLink == NULL) {
+            sourceFolder = getFolderXFromEnd(parsedPathSource, 1);
+            if (sourceFolder->fileExists(parsedPathSource->at(parsedPathSource->size() -1))){
+                fileToHardLink = sourceFolder->getFile(parsedPathSource->at(parsedPathSource->size()-1));
+            } else {
+                cout << "240" <<endl;
+                throw noSuchFile();
+            }
+        }
+        if (destinationFolder == NULL){
+            destinationFolder = getFolderXFromEnd(parsedPathDestination, 1);
+            if (destinationFolder->fileExists(parsedPathDestination->at(parsedPathDestination->size()-1))){
+                destinationFolder->getFile(parsedPathDestination->at(parsedPathDestination->size()-1))->remove();
+            }
+        }
+    } catch (string exceptionStatement){
+        cerr << exceptionStatement << "came from here" << endl;
+        return;
+    }
+    destinationFolder->getFiles().push_back(new File(parsedPathDestination->at(parsedPathDestination->size()-1),
+                                                     fileToHardLink->getIfs(),fileToHardLink->getOfs(),
+                                                     fileToHardLink->getNumberOfReferences()));
 }
 
 bool Terminal::copy(const string pathSource, const string pathDestination) {

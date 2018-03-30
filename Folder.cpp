@@ -8,7 +8,7 @@ Folder::Folder(const string folderName):name(folderName) {}
 
 Folder::~Folder() {
     for (vector<File*>::iterator i = files.begin(); i != files.end(); i++){
-        delete *i;
+        (*i)->remove();
     }
     for (vector<Folder*>::iterator i = folders.begin(); i != folders.end(); i++){
         delete *i;
@@ -99,6 +99,13 @@ void Folder::deleteFile(string &toRemove) {
             files.erase(i);
             return;
         }
+    }
+}
+
+void Folder::printRec(string path, ostream &out) {
+    out << path << "/" << name << ":" << endl;
+    for (vector<File *>::iterator i = files.begin(); i != files.end(); i++){
+        out << (*i)->getName() << "\t\t" << *(*i)->getNumberOfReferences() << "\t\t" << (*i)->getTimeSignature() << endl;
     }
 }
 
