@@ -7,7 +7,7 @@ command <file name> without path refers to current folder.
 (e.x mkdir hello, instead of mkdir V/hello)
 when in folder other than root, no need to specify entire path.
 (e.x when in V/hello, typing touch hi.txt
-will create file, instread of touch V/hello/hi)
+will create file, instead of touch V/hello/hi.txt)
 
 
 ls:
