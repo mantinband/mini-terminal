@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <iomanip>
 #include "Terminal.h"
 
 Terminal::Terminal(ostream &output)
@@ -183,8 +184,10 @@ void Terminal::rmdir(string path) {
 }
 
 void Terminal::lproot() const {
-    outputStream << "FILE" << "\t\t" << "HARD-LINKS" << "\t\t" << "LAST EDIT" << endl;
-    outputStream << "---------------------------------------------------------" << endl;
+    outputStream << setw(15) << left << "FILE";
+    outputStream << setw(15) << left << "|HARD-LINKS";
+    outputStream << setw(15) << left << "|LAST EDIT" << endl;
+    outputStream << "---------------+--------------+----------------------" << endl;
     root->printRec(root->getName(),outputStream);
 }
 

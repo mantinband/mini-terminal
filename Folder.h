@@ -44,6 +44,8 @@ private:
     vector<File*> files;
 
     void removeRec();
+
+    void clearStringStream(stringstream& s);
 };
 
 

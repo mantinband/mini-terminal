@@ -2,6 +2,8 @@
 // Created by amichai on 24/03/18.
 //
 
+#include <iomanip>
+#include <sstream>
 #include "Folder.h"
 
 Folder::Folder(const string folderName):name(folderName) {}
@@ -103,9 +105,27 @@ void Folder::deleteFile(string &toRemove) {
 }
 
 void Folder::printRec(string path, ostream &out) {
-    out << path << "/" << name << ":" << endl;
+    stringstream s;
+    s << path << "/" << name << ":";
+
+    out << setw(15) << left << s.str();
+    out << setw(15) << left << "|";
+    out << setw(15) << left << "|" << endl;
     for (vector<File *>::iterator i = files.begin(); i != files.end(); i++){
-        out << (*i)->getName() << "\t\t" << *(*i)->getNumberOfReferences() << "\t\t" << (*i)->getTimeSignature() << endl;
+        out << setw(15) << left << (*i)->getName();
+
+        clearStringStream(s);
+        s << "|" << *(*i)->getNumberOfReferences();
+        out << setw(15) << left << s.str();
+
+        clearStringStream(s);
+        s << "|" << (*i)->getTimeSignature();
+        out << setw(15) << left << s.str();
     }
+}
+
+void Folder::clearStringStream(stringstream &s) {
+    s.clear();
+    s.str(string());
 }
 
