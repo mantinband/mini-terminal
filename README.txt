@@ -12,7 +12,7 @@ will create file, instead of touch 'V/hello/hi.txt')
 
 ls:
 ls . (dot) prints current folders content
-(e.x 'ls .' instead of ls 'V/hello/')
+(e.x 'ls .' instead of 'ls V/hello/')
 
 --help:
 prints commands.
