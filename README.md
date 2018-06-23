@@ -21,7 +21,7 @@ the terminal allows user to create, edit add and remove files and folders in a v
 * ```exit```  *exits program*
 
 ## example
-```bash
+```
  Type --help to view commands
  amichai@miniterminal:~/V$ touch foo.dat
  amichai@miniterminal:~/V$ write foo.dat 0 a                        

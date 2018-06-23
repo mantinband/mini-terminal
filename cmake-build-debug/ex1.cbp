@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/amichai/CLionProjects/ex1/cmake-build-debug"/>
+				<Option working_dir="/home/amichai/school/cpp/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/amichai/CLionProjects/ex1/cmake-build-debug"/>
+				<Option working_dir="/home/amichai/school/cpp/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/amichai/CLionProjects/ex1/cmake-build-debug"/>
+				<Option working_dir="/home/amichai/school/cpp/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ex1">
-				<Option output="/home/amichai/CLionProjects/ex1/cmake-build-debug/ex1" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/amichai/CLionProjects/ex1/cmake-build-debug"/>
+				<Option output="/home/amichai/school/cpp/cmake-build-debug/ex1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amichai/school/cpp/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -54,15 +54,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 ex1"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 ex1"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ex1/fast">
-				<Option output="/home/amichai/CLionProjects/ex1/cmake-build-debug/ex1" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/amichai/CLionProjects/ex1/cmake-build-debug"/>
+				<Option output="/home/amichai/school/cpp/cmake-build-debug/ex1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/amichai/school/cpp/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -77,41 +77,41 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 ex1/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/CLionProjects/ex1/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 ex1/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/amichai/school/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/amichai/CLionProjects/ex1/File.cpp">
+		<Unit filename="/home/amichai/school/cpp/File.cpp">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/File.h">
+		<Unit filename="/home/amichai/school/cpp/File.h">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/Folder.cpp">
+		<Unit filename="/home/amichai/school/cpp/Folder.cpp">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/Folder.h">
+		<Unit filename="/home/amichai/school/cpp/Folder.h">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/Terminal.cpp">
+		<Unit filename="/home/amichai/school/cpp/Terminal.cpp">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/Terminal.h">
+		<Unit filename="/home/amichai/school/cpp/Terminal.h">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/main.cpp">
+		<Unit filename="/home/amichai/school/cpp/main.cpp">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/mainFunctions.cpp">
+		<Unit filename="/home/amichai/school/cpp/mainFunctions.cpp">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/mainFunctions.h">
+		<Unit filename="/home/amichai/school/cpp/mainFunctions.h">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/home/amichai/CLionProjects/ex1/CMakeLists.txt">
+		<Unit filename="/home/amichai/school/cpp/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/amichai/CLionProjects/ex1/File.cpp" "/home/amichai/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/File.cpp.o"
-  "/home/amichai/CLionProjects/ex1/Folder.cpp" "/home/amichai/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/Folder.cpp.o"
-  "/home/amichai/CLionProjects/ex1/Terminal.cpp" "/home/amichai/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/Terminal.cpp.o"
-  "/home/amichai/CLionProjects/ex1/main.cpp" "/home/amichai/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/main.cpp.o"
-  "/home/amichai/CLionProjects/ex1/mainFunctions.cpp" "/home/amichai/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/mainFunctions.cpp.o"
+  "/home/amichai/school/cpp/File.cpp" "/home/amichai/school/cpp/cmake-build-debug/CMakeFiles/ex1.dir/File.cpp.o"
+  "/home/amichai/school/cpp/Folder.cpp" "/home/amichai/school/cpp/cmake-build-debug/CMakeFiles/ex1.dir/Folder.cpp.o"
+  "/home/amichai/school/cpp/Terminal.cpp" "/home/amichai/school/cpp/cmake-build-debug/CMakeFiles/ex1.dir/Terminal.cpp.o"
+  "/home/amichai/school/cpp/main.cpp" "/home/amichai/school/cpp/cmake-build-debug/CMakeFiles/ex1.dir/main.cpp.o"
+  "/home/amichai/school/cpp/mainFunctions.cpp" "/home/amichai/school/cpp/cmake-build-debug/CMakeFiles/ex1.dir/mainFunctions.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
